@@ -16,8 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Room {
 
-    private Long id;
-    private Long roomId;
+    private String id;
+    private String roomId;
     private List<Message> messages=new ArrayList<>();
 
 }
