@@ -21,27 +21,28 @@ public class RoomController {
     }
 
 
-    //craete room
+    //create room
     @PostMapping
     public ResponseEntity<?> createRoom(@RequestBody String roomid) {
-        if (roomRepo.findByRoomID(roomid) != null) {
+        if (roomRepo.findByRoomId(roomid) != null) {
             return ResponseEntity.badRequest().body("Room already exists");
         }
 
         Room room = new Room();
         room.setRoomId(roomid);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(room);
+        Room savedRoom=roomRepo.save(room);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedRoom);
 
     }
 
     //get room
     @GetMapping("/{roomId}")
     public ResponseEntity<?> getRoom(@PathVariable String roomId) {
-        if (roomRepo.findByRoomID(roomId) == null) {
+        if (roomRepo.findByRoomId(roomId) == null) {
             return ResponseEntity.badRequest().body("Room Does not Exists");
         }
-        return ResponseEntity.ok(roomRepo.findByRoomID(roomId));
+        return ResponseEntity.ok(roomRepo.findByRoomId(roomId));
     }
 
     //get message of room
@@ -50,7 +51,7 @@ public class RoomController {
             , @RequestParam(value = "page", defaultValue = "0", required = false) int page
             , @RequestParam(value = "size", defaultValue = "20", required = false) int size) {
 
-        Room room = roomRepo.findByRoomID(roomId);
+        Room room = roomRepo.findByRoomId(roomId);
         if (room == null) {
             return ResponseEntity.notFound().build();
         }
@@ -59,9 +60,9 @@ public class RoomController {
 
         int start=Math.max(0,messages.size()-(page+1)*size);
         int end=Math.min(messages.size(),(start+size));
-        messages.subList(start,end);
+        List<Message> paginatedMessage=messages.subList(start,end);
 
-        return ResponseEntity.ok(messages);
+        return ResponseEntity.ok(paginatedMessage);
     }
 
 
