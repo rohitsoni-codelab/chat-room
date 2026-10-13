@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
-@CrossOrigin("http://localhost:5173")
+@CrossOrigin(origins ="http://localhost:5173" )
 public class ChatController {
 
     private RoomRepo roomRepo;
